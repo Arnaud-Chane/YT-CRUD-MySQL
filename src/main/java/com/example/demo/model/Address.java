@@ -1,49 +1,45 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
 
-@Entity
-@Table(name = "Addresses")
 public class Address {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private Integer number;
     private String street;
     private String postcode;
 
-    public Address(Integer number, String street, String postcode){
+    public Address(Integer number, String street, String postcode) {
         this.number = number;
         this.street = street;
         this.postcode = postcode;
     }
-    public Integer getId(){
+
+    public Integer getId() {
         return id;
     }
 
-    public Integer getNumber(){
+    public Integer getNumber() {
         return number;
     }
 
-    public void setNumber(Integer number){
+    public void setNumber(Integer number) {
         this.number = number;
     }
 
-    public String getStreet(){
+    public String getStreet() {
         return street;
     }
 
-    public void setStreet(String street){
+    public void setStreet(String street) {
         this.street = street;
     }
 
-    public String getPostcode(){
+    public String getPostcode() {
         return postcode;
     }
 
-    public void setPostcode(String postcode){
+    public void setPostcode(String postcode) {
         this.postcode = postcode;
     }
 }
