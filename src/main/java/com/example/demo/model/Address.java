@@ -3,7 +3,7 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Addresses")
+@Table(name = "address")
 public class Address {
 
     @Id
@@ -47,4 +47,6 @@ public class Address {
     public void setPostcode(String postcode) {
         this.postcode = postcode;
     }
+
+    public Address() {}
 }
