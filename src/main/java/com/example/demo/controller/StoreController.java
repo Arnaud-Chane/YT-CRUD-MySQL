@@ -46,4 +46,15 @@ public class StoreController {
         mySqlRepository.save(current);
         return current;
     }
+
+    @PostMapping("/add")
+    public Address create(@RequestBody Map<String, String> body){
+
+        String street = body.get("street");
+        String postcode = body.get("postcode");
+        Integer number = Integer.parseInt(body.get("number"));
+        Address newAddress = new Address(number,  street, postcode);
+
+        return mySqlRepository.save(newAddress);
+    }
 }
