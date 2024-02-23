@@ -3,13 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.model.Address;
 import com.example.demo.repository.MySqlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -36,5 +34,16 @@ public class StoreController {
             return true;
         }
         return false;
+    }
+
+    @PutMapping("/update/{id}")
+    public Address updateAddress(@PathVariable("id") Integer id,
+                                 @RequestBody Map<String, String> body){
+        Address current = mySqlRepository.findById(id).get();
+        current.setStreet(body.get("street"));
+        current.setNumber(Integer.parseInt(body.get("number")));
+        current.setPostcode(body.get("postcode"));
+        mySqlRepository.save(current);
+        return current;
     }
 }
