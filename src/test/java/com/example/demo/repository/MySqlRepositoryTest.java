@@ -11,7 +11,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -44,5 +46,16 @@ public class MySqlRepositoryTest {
         mockMvc.perform(get("/get-address/{identity}", 1))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.property", is("expectedValue"))); // replace "property" and "expectedValue" with the actual property name and expected value of the Address object
+    }
+
+    @Test
+    public void testDeleteRow() throws Exception {
+        when(mySqlRepository.findById(1)).thenReturn(Optional.of(new Address()));
+
+        mockMvc.perform(delete("/remove/{id}", 1))
+                .andExpect(status().isOk())
+                .andExpect(content().string("true"));
+
+        verify(mySqlRepository, times(1)).deleteById(1);
     }
 }
