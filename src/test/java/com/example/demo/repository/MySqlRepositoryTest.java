@@ -2,6 +2,7 @@ package com.example.demo.repository;
 
 import com.example.demo.model.Address;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -72,6 +73,24 @@ public class MySqlRepositoryTest {
             .andExpect(jsonPath("$.street", is("newStreet")))
             .andExpect(jsonPath("$.number", is(123)))
             .andExpect(jsonPath("$.postcode", is("newPostcode")));
+
+        verify(mySqlRepository, times(1)).save(org.mockito.ArgumentMatchers.any(Address.class));
+    }
+
+    @Test
+    public void testCreate() throws Exception {
+        Address address = new Address(232, "Spring", "Boot"); // create an Address object with the expected properties
+        when(mySqlRepository.save(org.mockito.ArgumentMatchers.any(Address.class))).thenReturn(address);
+
+        String requestBody = "{\"street\":\"Spring\",\"number\":\"232\",\"postcode\":\"Boot\"}";
+
+        mockMvc.perform(post("/add")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.street", is("Spring")))
+                .andExpect(jsonPath("$.number", is(232)))
+                .andExpect(jsonPath("$.postcode", is("Boot")));
 
         verify(mySqlRepository, times(1)).save(org.mockito.ArgumentMatchers.any(Address.class));
     }
