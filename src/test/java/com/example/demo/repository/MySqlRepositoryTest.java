@@ -41,12 +41,16 @@ public class MySqlRepositoryTest {
 
     @Test
     public void testGetSingleAddress() throws Exception {
-        Address address = new Address(); // create an Address object with the expected properties
+        Address address = new Address(123, "Baker Street", "NW1 6XE"); // create an Address object with the expected properties
         when(mySqlRepository.findById(1)).thenReturn(Optional.of(address));
 
         mockMvc.perform(get("/get-address/{identity}", 1))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.property", is("expectedValue"))); // replace "property" and "expectedValue" with the actual property name and expected value of the Address object
+                .andExpect(jsonPath("$.street", is("Baker Street")))
+                .andExpect(jsonPath("$.number", is(123)))
+                .andExpect(jsonPath("$.postcode", is("NW1 6XE")));
+
+        verify(mySqlRepository, times(1)).findById(1);
     }
 
     @Test
