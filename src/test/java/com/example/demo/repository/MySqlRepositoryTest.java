@@ -7,14 +7,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.test.context.TestPropertySource;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Optional;
 
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.hamcrest.Matchers.*;
@@ -57,5 +57,22 @@ public class MySqlRepositoryTest {
                 .andExpect(content().string("true"));
 
         verify(mySqlRepository, times(1)).deleteById(1);
+    }
+
+    @Test
+    public void testUpdateAddress() throws Exception {
+        when(mySqlRepository.findById(1)).thenReturn(Optional.of(new Address()));
+
+        String requestBody = "{\"street\":\"newStreet\",\"number\":\"123\",\"postcode\":\"newPostcode\"}";
+
+        mockMvc.perform(put("/update/{id}", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(requestBody))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.street", is("newStreet")))
+            .andExpect(jsonPath("$.number", is(123)))
+            .andExpect(jsonPath("$.postcode", is("newPostcode")));
+
+        verify(mySqlRepository, times(1)).save(org.mockito.ArgumentMatchers.any(Address.class));
     }
 }
