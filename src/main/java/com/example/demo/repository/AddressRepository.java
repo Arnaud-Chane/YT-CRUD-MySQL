@@ -46,4 +46,18 @@ public class AddressRepository {
             }
         });
     }
+
+    public List<Address> findAddressByNumberOrByPostcode(int number, int postcode) {
+        String sql = "SELECT number, street, postcode FROM address WHERE number = ? OR postcode = ?";
+        return jdbcTemplate.query(sql, new Object[]{number, postcode}, new RowMapper<Address>() {
+            @Override
+            public Address mapRow(ResultSet result, int rowNumber) throws SQLException {
+                Address address = new Address();
+                address.setStreet(result.getString("street"));
+                address.setNumber(result.getInt("number"));
+                address.setPostcode(result.getString("postcode"));
+                return address;
+            }
+        });
+    }
 }

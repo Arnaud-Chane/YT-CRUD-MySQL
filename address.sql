@@ -7,12 +7,27 @@ CREATE TABLE Address (
   PRIMARY KEY (id)
 );
 --@block
-INSERT INTO Address (number, street, postcode)
-VALUES (123, 'Baker Street', 'NW1 6XE'),
-  (456, 'Fleet Street', 'EC4A 2BH'),
-  (789, 'King’s Road', 'SW3 5XP'),
-  (101, 'Oxford Street', 'W1D 2LA'),
-  (112, 'Brick Lane', 'E1 6RL');
+INSERT INTO Address (number, street, postcode) VALUES
+(123, 'Main St', '12345'),
+(456, 'Oak St', '67890'),
+(789, 'Pine St', '11121'),
+(123, 'Main St', '12345'),
+(456, 'Oak St', '67890'),
+(789, 'Pine St', '11121'),
+(321, 'Elm St', '22243'),
+(654, 'Maple St', '33365'),
+(987, 'Cedar Mt', '44487'),
+(321, 'Elm St', '22243'),
+(654, 'Maple St', '33365'),
+(987, 'Cedar Mt', '44487'),
+(135, 'Birch St', '55509'),
+(246, 'Walnut St', '66621'),
+(357, 'Cherry St', '77743'),
+(135, 'Birch Mt', '55509'),
+(246, 'Walnut St', '66621'),
+(357, 'Cherry Mt', '77743'),
+(123, 'Main St', '12345'),
+(456, 'Oak St', '67890');
 --@block
 DROP TABLE address;
 --@block
