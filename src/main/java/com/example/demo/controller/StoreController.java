@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.Address;
 import com.example.demo.repository.AddressRepository;
 import com.example.demo.repository.MySqlRepository;
+import com.example.demo.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,10 +28,14 @@ public class StoreController {
 //    public Address getSingleAddress(@PathVariable("identity") Integer id){
 //        return mySqlRepository.findById(id).get();
 //    }
-//    @GetMapping("/get-address/{identity}")
-//    public Address getSingleAddress(@PathVariable("identity") Integer id){
-//        return "AddressByIdService";
-//    }
+
+    @Autowired
+    private AddressRepository addressRepository;
+
+    @GetMapping("/get-address/{identity}")
+    public Address getSingleAddress(@PathVariable("identity") Integer id){
+        return addressRepository.findById(id);
+    }
 
     @DeleteMapping("/remove/{id}")
     public boolean deleteRow(@PathVariable("id") Integer id){
