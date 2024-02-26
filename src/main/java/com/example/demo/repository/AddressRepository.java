@@ -22,6 +22,7 @@ public class AddressRepository {
             @Override
             public Address mapRow(ResultSet result, int rowNum) throws SQLException {
                 Address address = new Address();
+                address.setId(result.getInt("id"));
                 address.setStreet(result.getString("street"));
                 address.setNumber(result.getInt("number"));
                 address.setPostcode(result.getString("postcode"));
