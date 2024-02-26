@@ -32,6 +32,9 @@ public class MySqlRepositoryTest {
     @MockBean
     private MySqlRepository mySqlRepository;
 
+    @MockBean
+    private AddressRepository addressRepository;
+
     @Test
     public void testGetAllAddresses() throws Exception {
         mockMvc.perform(get("/get-all-addresses"))
@@ -39,10 +42,24 @@ public class MySqlRepositoryTest {
                 .andExpect(jsonPath("$", hasSize(5))); // replace 3 with the expected number of addresses
     }
 
+//    @Test
+//    public void testGetSingleAddress() throws Exception {
+//        Address address = new Address(123, "Baker Street", "NW1 6XE"); // create an Address object with the expected properties
+//        when(mySqlRepository.findById(1)).thenReturn(Optional.of(address));
+//
+//        mockMvc.perform(get("/get-address/{identity}", 1))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.street", is("Baker Street")))
+//                .andExpect(jsonPath("$.number", is(123)))
+//                .andExpect(jsonPath("$.postcode", is("NW1 6XE")));
+//
+//        verify(mySqlRepository, times(1)).findById(1);
+//    }
+
     @Test
     public void testGetSingleAddress() throws Exception {
         Address address = new Address(123, "Baker Street", "NW1 6XE"); // create an Address object with the expected properties
-        when(mySqlRepository.findById(1)).thenReturn(Optional.of(address));
+        when(addressRepository.findById(1)).thenReturn(address);
 
         mockMvc.perform(get("/get-address/{identity}", 1))
                 .andExpect(status().isOk())
@@ -50,7 +67,7 @@ public class MySqlRepositoryTest {
                 .andExpect(jsonPath("$.number", is(123)))
                 .andExpect(jsonPath("$.postcode", is("NW1 6XE")));
 
-        verify(mySqlRepository, times(1)).findById(1);
+        verify(addressRepository, times(1)).findById(1);
     }
 
     @Test
