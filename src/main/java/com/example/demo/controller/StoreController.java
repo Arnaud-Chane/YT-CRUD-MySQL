@@ -74,4 +74,9 @@ public class StoreController {
 
         return mySqlRepository.save(newAddress);
     }
+
+    @GetMapping("/get-address/{number}/{postcode}")
+    public List<Address> getAddressByNumberByPostCode(@PathVariable("number") Integer number, @PathVariable("postcode") String postcode){
+        return addressRepository.findAddressByNumberOrByPostcode(number, postcode);
+    }
 }
