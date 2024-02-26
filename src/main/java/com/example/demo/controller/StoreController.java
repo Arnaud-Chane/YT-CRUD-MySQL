@@ -18,10 +18,19 @@ public class StoreController {
     @Autowired
     MySqlRepository mySqlRepository;
 
+    @Autowired
+    private AddressRepository addressRepository;
+
+
+//    @GetMapping("/get-all-addresses")
+//    public List<Address> getAllAddresses(){
+//        System.out.println(mySqlRepository.count());
+//        return mySqlRepository.findAll();
+//    }
+
     @GetMapping("/get-all-addresses")
     public List<Address> getAllAddresses(){
-        System.out.println(mySqlRepository.count());
-        return mySqlRepository.findAll();
+        return addressRepository.findAll();
     }
 
 //    @GetMapping("/get-address/{identity}")
@@ -29,8 +38,6 @@ public class StoreController {
 //        return mySqlRepository.findById(id).get();
 //    }
 
-    @Autowired
-    private AddressRepository addressRepository;
 
     @GetMapping("/get-address/{identity}")
     public Address getSingleAddress(@PathVariable("identity") Integer id){
