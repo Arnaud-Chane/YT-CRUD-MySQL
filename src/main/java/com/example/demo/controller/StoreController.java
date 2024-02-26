@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.model.Address;
+import com.example.demo.repository.AddressRepository;
 import com.example.demo.repository.MySqlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +23,14 @@ public class StoreController {
         return mySqlRepository.findAll();
     }
 
-    @GetMapping("/get-address/{identity}")
-    public Address getSingleAddress(@PathVariable("identity") Integer id){
-        return mySqlRepository.findById(id).get();
-    }
+//    @GetMapping("/get-address/{identity}")
+//    public Address getSingleAddress(@PathVariable("identity") Integer id){
+//        return mySqlRepository.findById(id).get();
+//    }
+//    @GetMapping("/get-address/{identity}")
+//    public Address getSingleAddress(@PathVariable("identity") Integer id){
+//        return "AddressByIdService";
+//    }
 
     @DeleteMapping("/remove/{id}")
     public boolean deleteRow(@PathVariable("id") Integer id){
