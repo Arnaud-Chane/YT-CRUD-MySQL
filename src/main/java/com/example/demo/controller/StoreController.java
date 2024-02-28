@@ -30,7 +30,7 @@ public class StoreController {
 
     @GetMapping("/get-all-addresses")
     public List<Address> getAllAddresses(){
-        return addressRepository.findAll();
+        return mySqlRepository.findAllAddressesInTable();
     }
 
 //    @GetMapping("/get-address/{identity}")
