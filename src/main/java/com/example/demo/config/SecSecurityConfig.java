@@ -1,6 +1,5 @@
 package com.example.demo.config;
 
-import jakarta.servlet.ServletContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,11 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
-import org.springframework.web.WebApplicationInitializer;
-import org.springframework.web.context.ContextLoaderListener;
-import org.springframework.web.context.support.AnnotationConfigWebApplicationContext;
-import org.springframework.web.filter.DelegatingFilterProxy;
 
 @Configuration
 @EnableWebSecurity
@@ -70,16 +64,16 @@ public class SecSecurityConfig {
 //        }
 //    }
 
-//    @Bean
-//    SecurityFilterChain web(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeHttpRequests((authorize) -> authorize
-//                        .requestMatchers("/endpoint").hasAuthority("USER")
-//                        .anyRequest().authenticated()
-//                );
-//        // ...
-//
-//        return http.build();
-//    }
+    @Bean
+    SecurityFilterChain web(HttpSecurity http) throws Exception {
+        http
+                .authorizeHttpRequests((authorize) -> authorize
+                        .requestMatchers("/endpoint").hasAuthority("USER")
+                        .anyRequest().authenticated()
+                );
+        // ...
+
+        return http.build();
+    }
 
 }
