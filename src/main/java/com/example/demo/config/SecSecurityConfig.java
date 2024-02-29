@@ -2,12 +2,13 @@ package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -16,64 +17,35 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecSecurityConfig {
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests(
+                        requests ->
+                                requests
+                                        .requestMatchers(HttpMethod.GET, "/users")
+                                        .hasRole("USER")
+                                        .requestMatchers(HttpMethod.GET, "/admins")
+                                        .hasRole("ADMIN")
+                                        .anyRequest()
+                                        .authenticated())
+                .formLogin(Customizer.withDefaults());
+        return http.build();
     }
 
     @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
-        UserDetails user1 = User.withUsername("user1")
-                .password(passwordEncoder().encode("user1Pass"))
+    public UserDetailsService users() {
+        UserDetails user = User.builder()
+                .username("user")
+                .password("{noop}pw")
                 .roles("USER")
                 .build();
-        UserDetails user2 = User.withUsername("user2")
-                .password(passwordEncoder().encode("user2Pass"))
-                .roles("USER")
-                .build();
-        UserDetails admin = User.withUsername("admin")
-                .password(passwordEncoder().encode("adminPass"))
+
+        UserDetails admin = User.builder()
+                .username("admin")
+                .password("{noop}pw")
                 .roles("ADMIN")
                 .build();
-        return new InMemoryUserDetailsManager(user1, user2, admin);
-    }
 
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http
-//            .authorizeHttpRequests(authorize -> authorize
-//            .requestMatchers("/login/**", "/signup", "/about").permitAll()
-//            .requestMatchers("/admin/**").hasRole("ADMIN")
-//            .requestMatchers("/db/**").access(new WebExpressionAuthorizationManager("hasRole('ADMIN')"))
-//            .anyRequest().denyAll()
-//        );
-//        return http.build();
-//    }
-//
-//    public class AppInitializer implements WebApplicationInitializer {
-//
-//        @Override
-//        public void onStartup(ServletContext sc) {
-//
-//            AnnotationConfigWebApplicationContext root = new AnnotationConfigWebApplicationContext();
-//            root.register(SecSecurityConfig.class);
-//
-//            sc.addListener(new ContextLoaderListener(root));
-//
-//            sc.addFilter("securityFilter", new DelegatingFilterProxy("springSecurityFilterChain"))
-//                    .addMappingForUrlPatterns(null, false, "/*");
-//        }
-//    }
-
-    @Bean
-    SecurityFilterChain web(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/endpoint").hasAuthority("USER")
-                        .anyRequest().authenticated()
-                );
-        // ...
-
-        return http.build();
+        return new InMemoryUserDetailsManager(user, admin);
     }
 
 }
