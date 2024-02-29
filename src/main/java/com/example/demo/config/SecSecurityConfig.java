@@ -43,31 +43,43 @@ public class SecSecurityConfig {
         return new InMemoryUserDetailsManager(user1, user2, admin);
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-            .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers("/login/**", "/signup", "/about").permitAll()
-            .requestMatchers("/admin/**").hasRole("ADMIN")
-            .requestMatchers("/db/**").access(new WebExpressionAuthorizationManager("hasRole('ADMIN')"))
-            .anyRequest().denyAll()
-        );
-        return http.build();
-    }
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http
+//            .authorizeHttpRequests(authorize -> authorize
+//            .requestMatchers("/login/**", "/signup", "/about").permitAll()
+//            .requestMatchers("/admin/**").hasRole("ADMIN")
+//            .requestMatchers("/db/**").access(new WebExpressionAuthorizationManager("hasRole('ADMIN')"))
+//            .anyRequest().denyAll()
+//        );
+//        return http.build();
+//    }
+//
+//    public class AppInitializer implements WebApplicationInitializer {
+//
+//        @Override
+//        public void onStartup(ServletContext sc) {
+//
+//            AnnotationConfigWebApplicationContext root = new AnnotationConfigWebApplicationContext();
+//            root.register(SecSecurityConfig.class);
+//
+//            sc.addListener(new ContextLoaderListener(root));
+//
+//            sc.addFilter("securityFilter", new DelegatingFilterProxy("springSecurityFilterChain"))
+//                    .addMappingForUrlPatterns(null, false, "/*");
+//        }
+//    }
 
-    public class AppInitializer implements WebApplicationInitializer {
-
-        @Override
-        public void onStartup(ServletContext sc) {
-
-            AnnotationConfigWebApplicationContext root = new AnnotationConfigWebApplicationContext();
-            root.register(SecSecurityConfig.class);
-
-            sc.addListener(new ContextLoaderListener(root));
-
-            sc.addFilter("securityFilter", new DelegatingFilterProxy("springSecurityFilterChain"))
-                    .addMappingForUrlPatterns(null, false, "/*");
-        }
-    }
+//    @Bean
+//    SecurityFilterChain web(HttpSecurity http) throws Exception {
+//        http
+//                .authorizeHttpRequests((authorize) -> authorize
+//                        .requestMatchers("/endpoint").hasAuthority("USER")
+//                        .anyRequest().authenticated()
+//                );
+//        // ...
+//
+//        return http.build();
+//    }
 
 }
