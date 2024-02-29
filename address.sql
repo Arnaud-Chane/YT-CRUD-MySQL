@@ -38,13 +38,13 @@ FROM Address;
 
 
 --@block
-CREATE TABLE users (
+CREATE TABLE user (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL
 );
 
-INSERT INTO users (username, password) VALUES
+INSERT INTO user (username, password) VALUES
 ('user1', 'password1'),
 ('user2', 'password2'),
 ('user3', 'password3'),
@@ -52,7 +52,7 @@ INSERT INTO users (username, password) VALUES
 ('user5', 'password5');
 
 --@block
-DROP TABLE users;
+DROP TABLE user;
 --@block
 SELECT *
-FROM users;
+FROM user;
