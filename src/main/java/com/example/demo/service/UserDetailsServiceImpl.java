@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.repository.MySqlRepository;
+import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,14 +14,14 @@ import java.util.ArrayList;
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private MySqlRepository mySqlRepository;
+    private UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        User user = mySqlRepository.findById(id);
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
         if (user == null) {
-            throw new UsernameNotFoundException(id);
+            throw new UsernameNotFoundException(username);
         }
-        return new User(user.getId(), user.getPassword(), new ArrayList<>());
+        return new User(user.getId(), user.getPassword(), "User");
     }
 }
